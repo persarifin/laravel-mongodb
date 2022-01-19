@@ -13,7 +13,7 @@ class FindDataRule implements Rule
      */
     protected $table;
     
-    public function __construct($table)
+    public function __construct(string $table)
     {
         $this->table = $table;
     }
@@ -27,6 +27,9 @@ class FindDataRule implements Rule
      */
     public function passes($attribute, $value)
     {
+        if ($value <= 0 || $value == null) {
+            return true;
+        }
         $data = \DB::table($this->table)->where('id', $value)->first();
         
         return isset($data);

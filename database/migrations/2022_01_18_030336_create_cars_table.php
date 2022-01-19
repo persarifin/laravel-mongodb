@@ -17,6 +17,7 @@ class CreateCarsTable extends Migration
             $table->id();
             $table->string('machine');
             $table->char('capacity');
+            $table->unsignedBigInteger('transportation_id');
             $table->enum('transmission_type',['Manual','Auto']);
             $table->timestamps();
         });

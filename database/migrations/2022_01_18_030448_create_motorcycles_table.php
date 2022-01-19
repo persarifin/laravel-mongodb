@@ -17,6 +17,7 @@ class CreateMotorcyclesTable extends Migration
             $table->id();
             $table->string('machine');
             $table->unsignedBigInteger('suspension_id');
+            $table->unsignedBigInteger('transportation_id');
             $table->enum('transmission_type',['Manual','Auto']);
             $table->timestamps();
         });

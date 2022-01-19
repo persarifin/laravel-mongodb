@@ -2,15 +2,15 @@
 
 namespace App\Repositories;
 
-use App\Models\Transportation;
+use App\Models\PaymentMethod;
 use App\Http\Criterias\SearchCriteria;
 use App\Http\Presenters\DataPresenter;
 
-class TransportationRepository extends BaseRepository
+class PaymentMethodRepository extends BaseRepository
 {
     public function __construct() 
     {
-        parent::__construct(Transportation::class);
+        parent::__construct(PaymentMethod::class);
     }
 
 	public function index($request)
@@ -18,7 +18,7 @@ class TransportationRepository extends BaseRepository
 		try {
 			$this->query = $this->getModel();
 			$this->applyCriteria(new SearchCriteria($request));
-			
+
 			return $this->renderCollection($request);
 		}catch (\Exception $e) {
 			response()->json([
@@ -33,23 +33,20 @@ class TransportationRepository extends BaseRepository
 		$this->query = $this->getModel()->where('id', $id);
 		
 		$this->applyCriteria(new SearchCriteria($request));
-
+		
 		return $this->render($request);
 	}
 	
-
 	public function destroy($id)
 	{
 		try{
-			$transportation = $this->getModel()->find($id);
-			if (!$transportation) throw new \Exception("data not found", 400);
+			$payment = $this->getModel()->find($id);
+			
+			if (!$payment) {
+				throw new \Exception("data not found", 400);
+			}
 
-			$salesCount = Sales::where('sales_id', $transportation->id)->count();
-			if ($salesCount > 0 ) throw new \Exception("Delete Fail, cannot delete vehicle has sales", 401);
-
-			$transportation->car()->delete();
-			$transportation->motorcycle()->delete();
-			$transportation->delete();
+			$payment->delete();
 
 			return response()->json([
 				'success' => true,

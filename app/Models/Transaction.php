@@ -13,7 +13,7 @@ class Transaction extends Model
         'amount',
         'sales_id',
         'payment_method_id',
-        'transaction_date'
+        'transaction_date',
     ];
 
     public function paymentMethod()

@@ -10,10 +10,4 @@ use Illuminate\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-
-    protected $model;
-
-    public function __construct(string $model){
-        $this->model = $model;
-    }
 }

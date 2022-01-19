@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTransportationsTable extends Migration
+class CreatePaymentExpiredsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,9 @@ class CreateTransportationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('transportations', function (Blueprint $table) {
+        Schema::create('payment_expireds', function (Blueprint $table) {
             $table->id();
-            $table->decimal('price' ,8,0);
-            $table->tinyInteger('stock');
-            $table->string('producer');
-            $table->enum('type',['CAR','MOTORCYCLE']);
-            $table->timestamp('release_year');
+            $table->tinyInteger('hours');
             $table->timestamps();
         });
     }
@@ -31,6 +27,6 @@ class CreateTransportationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('transportations');
+        Schema::dropIfExists('payment_expireds');
     }
 }

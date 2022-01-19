@@ -2,84 +2,44 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Transportation;
 use Illuminate\Http\Request;
+use App\Http\Requests\TransportationRequest;
+use App\Http\Resources\TransportationResource;
+use App\Http\Resources\TransportationCollection;
 
 class TransportationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    protected $repository, $service;
+
+    public function __construct()
+    {
+        $this->repository = new App\Repositories\TransportationRepository;
+        $this->service =  new App\Http\Services\TransportationService;
+    }
+
     public function index()
     {
-        //
+        $result = $this->repository->index(Request::all());
+
+        return new TransportationCollection($result);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function store(TransportationRequest $request)
     {
-        //
+        $result = $this->service->store($request);
+
+        return new TransportationResource($result);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function update($id, TransportationRequest $request)
     {
-        //
+        $result = $this->service->update($id, $request);
+        
+        return new TransportationResource($result);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Transportation  $transportation
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Transportation $transportation)
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Transportation  $transportation
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Transportation $transportation)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Transportation  $transportation
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Transportation $transportation)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Transportation  $transportation
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Transportation $transportation)
-    {
-        //
+        return $this->repository->destroy($id);
     }
 }

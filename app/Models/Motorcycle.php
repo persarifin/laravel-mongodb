@@ -10,7 +10,6 @@ class Motorcycle extends Model
     use HasFactory;
 
     protected $fillable = [
-        'type',
         'machine',
         'suspension_id',
         'transmission_type'

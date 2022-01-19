@@ -2,84 +2,44 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PaymentMethod;
 use Illuminate\Http\Request;
+use App\Http\Requests\PaymentMethodRequest;
+use App\Http\Resources\PaymentMethodResource;
+use App\Http\Resources\PaymentMethodCollection;
 
 class PaymentMethodController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    protected $repository, $service;
+
+    public function __construct()
+    {
+        $this->repository = new App\Repositories\PaymentMethodRepository;
+        $this->service =  new App\Http\Services\PaymentMethodService;
+    }
+
     public function index()
     {
-        //
+        $result = $this->repository->index(Request::all());
+
+        return new PaymentMethodCollection($result);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function store(PaymentMethodRequest $request)
     {
-        //
+        $result = $this->service->store($request);
+
+        return new PaymentMethodResource($result);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function update($id, PaymentMethodRequest $request)
     {
-        //
+        $result = $this->service->update($id, $request);
+        
+        return new PaymentMethodResource($result);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\PaymentMethod  $paymentMethod
-     * @return \Illuminate\Http\Response
-     */
-    public function show(PaymentMethod $paymentMethod)
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\PaymentMethod  $paymentMethod
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(PaymentMethod $paymentMethod)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\PaymentMethod  $paymentMethod
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, PaymentMethod $paymentMethod)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\PaymentMethod  $paymentMethod
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(PaymentMethod $paymentMethod)
-    {
-        //
+        return $this->repository->destroy($id);
     }
 }

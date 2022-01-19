@@ -12,7 +12,6 @@ class UserController extends Controller
     public function __construct(UserRepository $repository)
     {
         $this->repository = $repository;
-        parent::__construct(\App\Models\User::class);
     }
 
     public function register(RegisterRequest $request)

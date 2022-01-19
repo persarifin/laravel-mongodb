@@ -41,4 +41,21 @@ class BaseRepository implements RepositoryInterface
 
         return $this;
     }
+
+    public function renderCollection($payload)
+    {
+        if (is_array($payload['relations'] && !empty($payload['relations']))) {
+            $this->query = $this->query->with($payload['relations']);
+        }
+
+        return $this->query->paginate(!empty($payload['limit'])? $payload['limit'] : 15);
+    }
+
+    public function render($payload)
+    {
+        if (is_array($payload['relations'] && !empty($payload['relations']))) {
+            $this->query = $this->query->with($payload['relations']);
+        }
+        return $this->query->first();
+    }
 }

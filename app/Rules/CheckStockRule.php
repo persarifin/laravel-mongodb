@@ -4,19 +4,18 @@ namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 
-class BalanceRule implements Rule
+class CheckStockRule implements Rule
 {
     /**
      * Create a new rule instance.
      *
      * @return void
      */
-    protected $message;
+    protected $id;
 
-    public function __construct()
+    public function __construct($id)
     {
-        $this->message = '';
-
+        $this->id = $id;
     }
 
     /**
@@ -28,9 +27,8 @@ class BalanceRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        $dana = \DB::table('danas')->where('user_id', \Auth::user()->id)->first();
-
-        return $dana->amount >= $value;
+        $data  = \DB::table('transportations')->where(['id' => $this->id])->where('stock', '>=',$value)->count();
+        return $data == 1;
     }
 
     /**
@@ -40,6 +38,6 @@ class BalanceRule implements Rule
      */
     public function message()
     {
-        return 'The :attribute must be greater than or equal amount of dana';
+        return 'quantity exceed available stock.';
     }
 }

@@ -3,22 +3,22 @@
 namespace App\Http\Services;
 
 use Illuminate\Http\Request;
-use App\Repositories\PaymentMethodRepository;
-use App\Models\PaymentMethod;
+use App\Repositories\PaymentExpiredRepository;
+use Carbon\Carbon;
 
-class PaymentMethodService extends BaseService
+class PaymentExpiredService extends BaseService
 {
-    protected $paymentMethodRepository;
+    protected $paymentExpiredRepository;
     public function __construct()
     {
-        $this->paymentMethodRepository = new PaymentMethodRepository;
+        $this->paymentExpiredRepository = new PaymentExpiredRepository;
     }
 
     public function store($request)
 	{
 		try{
 			$payload = $request->all();
-			$payment = $this->PaymentMethodRepository->getModel()->create($payload);
+			$payment = $this->PaymentExpiredRepository->getModel()->create($payload);
 
 			return $this->show($payment->id, $request);
 		}catch (\Exception $e) {
@@ -33,7 +33,7 @@ class PaymentMethodService extends BaseService
 	{
 		try{
 			$payload = $request->all();
-			$payment = PaymentMethod::find($id);
+			$payment = PaymentExpired::find($id);
 
 			if (!$payment) {
 				throw new \Exception("data not found", 400);
@@ -41,7 +41,7 @@ class PaymentMethodService extends BaseService
 			
 			$payment->update($payload);
 
-			return $this->paymentMethodRepository->show($payment->id, $request);
+			return $this->paymentExpiredRepository->show($payment->id, $request);
 		}catch (\Exception $e) {
 			response()->json([
 			   'success' => false,
@@ -50,5 +50,4 @@ class PaymentMethodService extends BaseService
 	   }
 		
 	}
-
 }
