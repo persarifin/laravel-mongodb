@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTransactionsTable extends Migration
+class CreateSuspensionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class CreateTransactionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('transactions', function (Blueprint $table) {
+        Schema::create('suspensions', function (Blueprint $table) {
             $table->id();
-            $table->double('amount',10,2);
-            $table->unsignedBigInteger('sales_id');
-            $table->unsignedBigInteger('payment_method_id');
-            $table->timestamp('transaction_date');
+            $table->string('type_name');
             $table->timestamps();
         });
     }
@@ -30,6 +27,6 @@ class CreateTransactionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('transactions');
+        Schema::dropIfExists('suspensions');
     }
 }

@@ -14,23 +14,6 @@ class WalletRepository extends BaseRepository
         parent::__construct(Wallet::class);
     }
 
-    public function getWallet()
-	{
-		try{
-			$this->query = $this->getModel()->get();
-			return response()->json([
-				'success' => true,
-				'data' => $this->query,
-			], 200);
-
-		}catch (\Exception $e) {
-			 response()->json([
-				'success' => false,
-				'message' => $e->getMessage()
-			], 400);
-		}
-	}
-
 	public function index($request)
 	{
 		try {

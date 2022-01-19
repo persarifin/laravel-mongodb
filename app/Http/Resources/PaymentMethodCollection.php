@@ -14,6 +14,35 @@ class PaymentMethodCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'data' => $this->collection->transform(function ($page) {
+                return [
+                    'id' => $page->id,
+                    'method_name' => $page->method_name
+                ];
+            }),
+        ];
+    }
+    
+    public function with($request)
+    {
+        if(!empty($this->links())){
+            return [
+                'meta' => [
+                    'ffrom'      => number_format($this->firstItem()),
+                    'flast_page' => number_format($this->lastPage()),
+                    'fper_page'  => number_format($this->perPage()),
+                    'fto'        => number_format($this->lastItem()),
+                    'ftotal'     => number_format($this->total()),
+                ],
+                'status'    => 200,
+                'error'     => 0,
+            ];
+        }else{
+            return [
+                'status'    => 200,
+                'error'     => 0,
+            ];
+        }
     }
 }

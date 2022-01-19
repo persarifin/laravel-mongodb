@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class TransportationCollection extends ResourceCollection
+class SalesCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -16,23 +16,19 @@ class TransportationCollection extends ResourceCollection
     {
         return [
             'data' => $this->collection->transform(function ($page) {
-                $data = [
-                    'id'    =>  $page->id,
-                    'release_year' => $this->release_year,
-                    'price' => $this->price,
-                    'stock' => $this->stock,
-                    'producer' => $this->producer
+                return [
+                    'id' => $page->id,
+                    'invoice' => $page->invoice,
+                    'quantity' => $page->quantity,
+                    'customer_name' => $page->customer_name,
+                    'selling_date' => $page->selling_date,
+                    'transportation' => $page->transportation ? $page->transportation : null,
+                    'user' => $page->user ? $page->user : null
                 ];
-                if ($page->motorcycle_id > 0 && $page->motorcycle){
-                    array_merge($data, ['motorcycle' => $page->motorcycle]);
-                }
-                elseif($page->car_id > 0 && $page->car){
-                    array_merge($data, ['car' => $page->car]);
-                }
-                return $data;
             }),
         ];
     }
+    
     public function with($request)
     {
         if(!empty($this->links())){

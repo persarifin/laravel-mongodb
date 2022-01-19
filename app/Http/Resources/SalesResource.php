@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TransactionResource extends JsonResource
+class SalesResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,13 +16,14 @@ class TransactionResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'amount' => $this->amount,
-            'sales_id' => $this->sales_id,
-            'payment_method_name' => $this->payment_method ? $this->payment_method->method_name : null,
-            'transaction_date' => $this->transaction_date
+            'invoice' => $this->invoice,
+            'quantity' => $this->quantity,
+            'customer_name' => $this->customer_name,
+            'selling_date' => $this->selling_date,
+            'transportation' => $this->transportation ? $this->transportation : null,
+            'user' => $this->user ? $this->user : null
         ];
     }
-    
     public function with($request)
     {
         return [

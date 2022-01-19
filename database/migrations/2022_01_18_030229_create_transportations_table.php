@@ -15,9 +15,10 @@ class CreateTransportationsTable extends Migration
     {
         Schema::create('transportations', function (Blueprint $table) {
             $table->id();
-            $table->string('type');
             $table->decimal('price' ,8,0);
-            $table->timestamp('release_at');
+            $table->tinyInteger('stock');
+            $table->string('producer');
+            $table->timestamp('release_year');
             $table->unsignedBigInteger('car_id')->default(0);
             $table->unsignedBigInteger('motorcycle_id')->default(0);
             $table->timestamps();

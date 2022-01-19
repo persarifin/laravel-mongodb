@@ -4,12 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
-use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
+use Jenssegers\Mongodb\Eloquent\Model;
 use Laravel\Passport\HasApiTokens;
-use Illuminate\Auth\Authenticatable as AuthenticatableTrait;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Eloquent
+class User extends Model
 {   
     use HasApiTokens, HasFactory, Notifiable;
 

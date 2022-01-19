@@ -16,8 +16,8 @@ class CreateCarsTable extends Migration
         Schema::create('cars', function (Blueprint $table) {
             $table->id();
             $table->string('machine');
-            $table->string('capacity');
-            $table->string('transmission_type');
+            $table->char('capacity');
+            $table->enum('transmission_type',['Manual','Auto']);
             $table->timestamps();
         });
     }

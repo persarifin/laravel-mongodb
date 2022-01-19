@@ -15,6 +15,9 @@ class CreateMotorcyclesTable extends Migration
     {
         Schema::create('motorcycles', function (Blueprint $table) {
             $table->id();
+            $table->string('machine');
+            $table->unsignedBigInteger('suspension_id');
+            $table->enum('transmission_type',['Manual','Auto']);
             $table->timestamps();
         });
     }

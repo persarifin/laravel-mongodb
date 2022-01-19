@@ -14,6 +14,17 @@ class PaymentMethodResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'method_name' => $this->method_name
+        ];
+    }
+
+    public function with($request)
+    {
+        return [
+            'status'    => 200,
+            'error'     => 0,
+        ];
     }
 }

@@ -44,6 +44,7 @@ return array(
     'App\\Models\\Motorcycle' => $baseDir . '/app/Models/Motorcycle.php',
     'App\\Models\\PaymentMethod' => $baseDir . '/app/Models/PaymentMethod.php',
     'App\\Models\\Sales' => $baseDir . '/app/Models/Sales.php',
+    'App\\Models\\Suspension' => $baseDir . '/app/Models/Suspension.php',
     'App\\Models\\Transaction' => $baseDir . '/app/Models/Transaction.php',
     'App\\Models\\Transportation' => $baseDir . '/app/Models/Transportation.php',
     'App\\Models\\User' => $baseDir . '/app/Models/User.php',
