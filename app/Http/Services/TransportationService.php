@@ -17,12 +17,12 @@ class TransportationService extends BaseService
     public function store($request)
 	{
 		$payload = $request->all();
-		$payload['type'] = $payload['cars'] ? 'CAR' : 'MOTORCYCLE';
+		$payload['type'] = $request->filled('cars') ? 'CAR' : 'MOTORCYCLE';
 		$transportation = \App\Models\Transportation::create($payload);
 
-		if ($payload['cars']) {
-			$transportation->car()->create($request['cars']);
-		}elseif ($payload['motorcycles']) {
+		if ($request->filled('cars')) {
+			$transportation->car()->create($payload['cars']);
+		}elseif ($request->filled('motorcycles')) {
 			$transportation->motorcycle()->create($payload['motorcycles']);
 		}
 
@@ -32,18 +32,12 @@ class TransportationService extends BaseService
 	public function update($id, $request)
 	{
 		$payload = $request->all();
-		$payload['type'] = $payload['cars'] ? 'CAR' : 'MOTORCYCLE';
+		$payload['type'] = $request->filled('cars') ? 'CAR' : 'MOTORCYCLE';
+		$transportation = \App\Models\Transportation::create($payload);
 
-		$transportation = \App\Models\Transportation::find($id);
-
-		if (!$transportation) throw new \Exception("data not found", 400);
-		if($transportation->type != $payload['type']) throw new \Exception("cannot change type", 400);
-
-		if ($payload['cars']) {
-			$payload['type'] = 'CAR';
+		if ($request->filled('cars')) {
 			$transportation->car()->create($payload['cars']);
-		}elseif ($payload['motorcycles']) {
-			$payload['type'] = 'MOTORCYCLE';
+		}elseif ($request->filled('motorcycles')) {
 			$transportation->motorcycle()->create($payload['motorcycles']);
 		}
 
