@@ -19,25 +19,19 @@ class PaymentExpiredController extends Controller
         $this->service =  new PaymentExpiredService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $result = $this->repository->index(Request::all());
-
-        return new PaymentExpiredCollection($result);
+        return $this->repository->index($request);
     }
 
     public function store(PaymentExpiredRequest $request)
     {
-        $result = $this->service->store($request);
-
-        return new PaymentExpiredResource($result);
+        return $this->service->store($request);
     }
 
     public function update($id, PaymentExpiredRequest $request)
     {
-        $result = $this->service->update($id, $request);
-
-        return new PaymentExpiredResource($result);
+        return $this->service->update($id, $request);
     }
 
     public function destroy($id)

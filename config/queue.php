@@ -29,16 +29,17 @@ return [
     */
 
     'connections' => [
-
         'sync' => [
             'driver' => 'sync',
         ],
 
         'database' => [
-            'driver' => 'database',
+            'driver' => 'mongodb',
             'table' => 'jobs',
+            'connection' => env('DB_DATABASE','testing'),
             'queue' => 'default',
             'retry_after' => 90,
+            'expire' => 60,
             'after_commit' => false,
         ],
 
@@ -69,6 +70,13 @@ return [
             'retry_after' => 90,
             'block_for' => null,
             'after_commit' => false,
+        ],
+
+        'failed' => [
+            'driver' => 'mongodb',
+            // You can also specify your jobs specific database created on config/database.php
+            'database' => env('DB_DATABASE','testing'),
+            'table' => 'failed_jobs',
         ],
 
     ],

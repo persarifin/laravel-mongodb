@@ -9,6 +9,7 @@ use App\Models\PaymentMethod;
 class PaymentMethodService extends BaseService
 {
     protected $paymentMethodRepository;
+
     public function __construct()
     {
         $this->paymentMethodRepository = new PaymentMethodRepository;
@@ -18,9 +19,9 @@ class PaymentMethodService extends BaseService
 	{
 		try{
 			$payload = $request->all();
-			$payment = $this->PaymentMethodRepository->getModel()->create($payload);
+			$payment = PaymentMethod::create($payload);
 
-			return $this->show($payment->id, $request);
+			return $this->paymentMethodRepository->show($payment->_id, $request);
 		}catch (\Exception $e) {
 			response()->json([
 			   'success' => false,
@@ -41,14 +42,12 @@ class PaymentMethodService extends BaseService
 			
 			$payment->update($payload);
 
-			return $this->paymentMethodRepository->show($payment->id, $request);
+			return $this->paymentMethodRepository->show($payment->_id, $request);
 		}catch (\Exception $e) {
 			response()->json([
 			   'success' => false,
 			   'message' => $e->getMessage()
 		   ], 400);
-	   }
-		
+	   }	
 	}
-
 }

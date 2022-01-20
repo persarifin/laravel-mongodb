@@ -41,7 +41,10 @@ return [
             'database' => env('DB_DATABASE'),
             'username' => env('DB_USERNAME','root'),
             'password' => env('DB_PASSWORD','root'),
-            'options'  => []
+            'options' => [
+        
+                'database' => env('DB_AUTHENTICATION_DATABASE', 'admin'), // required with Mongo 3+
+            ],
         ],
         'sqlite' => [
             'driver' => 'sqlite',

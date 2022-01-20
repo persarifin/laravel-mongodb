@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PaymentMethodResource extends JsonResource
+class PaymentMethodResource extends BaseResource
 {
     /**
      * Transform the resource into an array.
@@ -12,19 +12,16 @@ class PaymentMethodResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
+    protected $availableRelations = [];
+    protected $resourceType = 'payment_method';
+    
     public function toArray($request)
     {
-        return [
-            'id' => $this->id,
-            'method_name' => $this->method_name
-        ];
-    }
-
-    public function with($request)
-    {
-        return [
-            'status'    => 200,
-            'error'     => 0,
-        ];
+        return $this->transformResponse([
+            'id'              => $this->getIdentifier(),
+            'method_name'       => $this->method_name,
+            'created_at'      => $this->created_at,
+            'updated_at'      => $this->updated_at
+        ]);
     }
 }

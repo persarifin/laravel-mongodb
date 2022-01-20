@@ -12,10 +12,12 @@ class CheckStockRule implements Rule
      * @return void
      */
     protected $id;
+    protected $message;
 
     public function __construct($id)
     {
         $this->id = $id;
+        $this->message = '';
     }
 
     /**
@@ -27,8 +29,13 @@ class CheckStockRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        $data  = \DB::table('transportations')->where(['id' => $this->id])->where('stock', '>=',$value)->count();
-        return $data == 1;
+        $data  = \DB::table('transportations')->where(['id' => $this->id])->first();
+
+        if (!$data) {
+            return true;
+        }
+
+        return $value <= (int)$data->stock;
     }
 
     /**

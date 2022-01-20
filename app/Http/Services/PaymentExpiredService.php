@@ -3,6 +3,7 @@
 namespace App\Http\Services;
 
 use Illuminate\Http\Request;
+use App\Models\PaymentExpired;
 use App\Repositories\PaymentExpiredRepository;
 use Carbon\Carbon;
 
@@ -18,9 +19,9 @@ class PaymentExpiredService extends BaseService
 	{
 		try{
 			$payload = $request->all();
-			$payment = $this->PaymentExpiredRepository->getModel()->create($payload);
+			$payment = PaymentExpired::create($payload);
 
-			return $this->show($payment->id, $request);
+			return $this->paymentExpiredRepository->show($payment->_id, $request);
 		}catch (\Exception $e) {
 			response()->json([
 			   'success' => false,
@@ -41,7 +42,7 @@ class PaymentExpiredService extends BaseService
 			
 			$payment->update($payload);
 
-			return $this->paymentExpiredRepository->show($payment->id, $request);
+			return $this->paymentExpiredRepository->show($payment->_id, $request);
 		}catch (\Exception $e) {
 			response()->json([
 			   'success' => false,

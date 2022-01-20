@@ -9,7 +9,7 @@ class PaymentExpired extends Model
 {
     use HasFactory;
 
-    protected $fillabel = [
+    protected $fillable = [
         'hours'
     ];
 }

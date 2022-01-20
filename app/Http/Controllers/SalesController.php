@@ -13,29 +13,23 @@ class SalesController extends Controller
 
     public function __construct()
     {
-        $this->repository = new App\Repositories\SalesRepository;
-        $this->service =  new App\Http\Services\SalesService;
+        $this->repository = new \App\Repositories\SalesRepository;
+        $this->service =  new \App\Http\Services\SalesService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $result = $this->repository->index(Request::all());
-
-        return new SalesCollection($result);
+        return $this->repository->index($request);
     }
 
     public function store(SalesRequest $request)
     {
-        $result = $this->service->store($request);
-
-        return new SalesResource($result);
+        return $this->service->store($request);
     }
 
     public function updateStatusCancel($id)
     {
-        $result = $this->service->updateStatusCancel($id);
-        
-        return new SalesResource($result);
+        return $this->service->updateStatusCancel($id);
     }
 
     public function destroy($id)

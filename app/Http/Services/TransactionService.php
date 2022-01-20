@@ -19,7 +19,7 @@ class TransactionService extends BaseService
 	{
 		try{
 			$payload = $request->all();
-            $sales = $this->salesRepository->getModel()->find($payload['sales_id']);
+            $sales = \App\Models\Sales::find($payload['sales_id']);
             if ($sales->payment_expired_at >= Carbon::now()->toDateTimeString) {
                 $sales->status = "FAILED";
                 $sales->save();
@@ -39,7 +39,7 @@ class TransactionService extends BaseService
             $transportation->stock -= $sales->quantity;
             $transportation->save();
             
-			return $this->transactionRepository->show($transaction->id, $request);
+			return $this->transactionRepository->show($transaction->_id, $request);
 		}catch (\Exception $e) {
 			response()->json([
 			   'success' => false,

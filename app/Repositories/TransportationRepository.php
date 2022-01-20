@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Transportation;
 use App\Http\Criterias\SearchCriteria;
 use App\Http\Presenters\DataPresenter;
+use App\Http\Resources\TransportationResource;
 
 class TransportationRepository extends BaseRepository
 {
@@ -18,8 +19,11 @@ class TransportationRepository extends BaseRepository
 		try {
 			$this->query = $this->getModel();
 			$this->applyCriteria(new SearchCriteria($request));
-			
-			return $this->renderCollection($request);
+			$presenter = new DataPresenter(TransportationResource::class, $request);
+	
+			return $presenter
+				->preparePager()
+				->renderCollection($this->query);
 		}catch (\Exception $e) {
 			response()->json([
 				'success' => false,
@@ -30,11 +34,13 @@ class TransportationRepository extends BaseRepository
 
 	public function show($id, $request)
 	{
-		$this->query = $this->getModel()->where('id', $id);
-		
-		$this->applyCriteria(new SearchCriteria($request));
+		$this->query = $this->getModel()->where('_id', $id)->with(['car','motorcycle']);
 
-		return $this->render($request);
+		// return $this->query;
+		
+		$presenter = new DataPresenter(TransportationResource::class, $request);
+	
+		return $presenter->render($this->query);
 	}
 	
 
@@ -44,7 +50,7 @@ class TransportationRepository extends BaseRepository
 			$transportation = $this->getModel()->find($id);
 			if (!$transportation) throw new \Exception("data not found", 400);
 
-			$salesCount = Sales::where('sales_id', $transportation->id)->count();
+			$salesCount = \App\Models\Sales::where('transportation_id', $transportation->_id)->count();
 			if ($salesCount > 0 ) throw new \Exception("Delete Fail, cannot delete vehicle has sales", 401);
 
 			$transportation->car()->delete();

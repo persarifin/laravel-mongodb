@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\PaymentExpired;
 use App\Http\Criterias\SearchCriteria;
 use App\Http\Presenters\DataPresenter;
+use App\Http\Resources\PaymentExpiredResource;
 
 class PaymentExpiredRepository extends BaseRepository
 {
@@ -18,8 +19,12 @@ class PaymentExpiredRepository extends BaseRepository
 		try {
 			$this->query = $this->getModel();
 			$this->applyCriteria(new SearchCriteria($request));
+			$presenter = new DataPresenter(PaymentExpiredResource::class, $request);
+	
+			return $presenter
+				->preparePager()
+				->renderCollection($this->query);
 
-			return $this->renderCollection($request);
 		}catch (\Exception $e) {
 			response()->json([
 				'success' => false,
@@ -30,11 +35,10 @@ class PaymentExpiredRepository extends BaseRepository
 
 	public function show($id, $request)
 	{
-		$this->query = $this->getModel()->where('id', $id);
+		$this->query = $this->getModel()->where('_id', $id);
+		$presenter = new DataPresenter(PaymentExpiredResource::class, $request);
 		
-		$this->applyCriteria(new SearchCriteria($request));
-		
-		return $this->render($request);
+		return $presenter->render($this->query);
 	}
 	
 	public function destroy($id)
@@ -42,9 +46,11 @@ class PaymentExpiredRepository extends BaseRepository
 		try{
 			$payment = $this->getModel()->find($id);
 			
-			if (!$payment) {
-				throw new \Exception("data not found", 400);
-			}
+			if (!$payment) throw new \Exception("data not found", 400);
+
+			$sales = \App\Models\Sales::where('sales_id', $payment->_id)->count();
+
+			if ($sales > 0) throw new \Exception("delete failed, this payment expired used by sales", 400);
 
 			$payment->delete();
 

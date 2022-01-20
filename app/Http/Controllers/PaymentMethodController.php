@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\PaymentMethodRequest;
+use App\Http\Services\PaymentMethodService;
+use App\Repositories\PaymentMethodRepository;
 use App\Http\Resources\PaymentMethodResource;
 use App\Http\Resources\PaymentMethodCollection;
 
@@ -13,29 +15,23 @@ class PaymentMethodController extends Controller
 
     public function __construct()
     {
-        $this->repository = new App\Repositories\PaymentMethodRepository;
-        $this->service =  new App\Http\Services\PaymentMethodService;
+        $this->repository = new PaymentMethodRepository;
+        $this->service =  new PaymentMethodService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $result = $this->repository->index(Request::all());
-
-        return new PaymentMethodCollection($result);
+        return $this->repository->index($request);
     }
 
     public function store(PaymentMethodRequest $request)
     {
-        $result = $this->service->store($request);
-
-        return new PaymentMethodResource($result);
+        return $this->service->store($request);
     }
 
     public function update($id, PaymentMethodRequest $request)
     {
-        $result = $this->service->update($id, $request);
-        
-        return new PaymentMethodResource($result);
+        return $this->service->update($id, $request);
     }
 
     public function destroy($id)

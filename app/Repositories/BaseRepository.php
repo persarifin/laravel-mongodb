@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Http\Criterias\CriteriaInterface;
 use App\Repositories\RepositoryInterface;
+use App\Http\Presenters\PresenterInterface;
 use Illuminate\Http\Request;
 
 class BaseRepository implements RepositoryInterface
@@ -42,20 +43,8 @@ class BaseRepository implements RepositoryInterface
         return $this;
     }
 
-    public function renderCollection($payload)
+    public function setPresenter(PresenterInterface $presenter)
     {
-        if (is_array($payload['relations'] && !empty($payload['relations']))) {
-            $this->query = $this->query->with($payload['relations']);
-        }
-
-        return $this->query->paginate(!empty($payload['limit'])? $payload['limit'] : 15);
-    }
-
-    public function render($payload)
-    {
-        if (is_array($payload['relations'] && !empty($payload['relations']))) {
-            $this->query = $this->query->with($payload['relations']);
-        }
-        return $this->query->first();
+        $this->presenter = $presenter;
     }
 }

@@ -19,20 +19,25 @@ class Transportation extends Model
 
     public function car()
     {
-        return $this->type == 'CAR' ? $this->hasOne(Car::class) : null;
+        return $this->hasOne(Car::class);
     }
 
     public function motorcycle()
     {
-        return $this->type == 'MOTORCYCLE'? $this->hasOne(Motorcycle::class) : null;
+        return $this->hasOne(Motorcycle::class);
     }
 
-    protected $appends = ['already_sold'];
+    // protected $appends = ['already_sold'];
 
-    public function getAlreadySoldAttribute()
+    // public function getAlreadySoldAttribute()
+    // {
+    //     $return = $this->hasMany(Sales::class)->where(['transportation_id' => $this->id,'sales.status' => "PAID"])->sum('quantity');
+
+    //     return !empty($return) && $return > 0 ? $return : 0;
+    // }
+
+    public function salesReport()
     {
-        $return = $this->hasMany(Sales::class)->where(['transportation_id' => $this->id,'sales.status' => "PAID"])->sum('quantity');
-
-        return $return > 0 ? $return : 0;
+        return $this->hasMany(Sales::class);
     }
 }

@@ -80,7 +80,7 @@ class SearchCriteria implements CriteriaInterface
 
     public function apply($query)
     {
-		DB::beginTransaction();
+		// \DB::beginTransaction();
 		
         $model = $query->getModel();
         $table = $model->getTable();

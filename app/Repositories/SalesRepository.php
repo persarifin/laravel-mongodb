@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Sales;
 use App\Http\Criterias\SearchCriteria;
 use App\Http\Presenters\DataPresenter;
+use App\Http\Resources\SalesResource;
 
 class SalesRepository extends BaseRepository
 {
@@ -18,8 +19,11 @@ class SalesRepository extends BaseRepository
 		try {
 			$this->query = $this->getModel()->with(['transaction','user','transportation.car','transportation.motorcycle']);
 			$this->applyCriteria(new SearchCriteria($request));
-			
-			return $this->renderCollection($request);
+			$presenter = new DataPresenter(SalesResource::class, $request);
+	
+			return $presenter
+				->preparePager()
+				->renderCollection($this->query);
 		}catch (\Exception $e) {
 			response()->json([
 				'success' => false,
@@ -32,9 +36,8 @@ class SalesRepository extends BaseRepository
 	{
 		$this->query = $this->getModel()->where('id', $id);
 		
-		$this->applyCriteria(new SearchCriteria($request));
-
-		return $this->render($request); 
+		$presenter = new DataPresenter(SalesResource::class, $request);
+		return $presenter->render($this->query); 
 	}
 	
 
@@ -43,9 +46,7 @@ class SalesRepository extends BaseRepository
 		try{
 			$sales = $this->getModel()->find($id);
 
-			if (!$sales) {
-				throw new \Exception("data not found", 400);
-			}
+			if (!$sales) throw new \Exception("data not found", 400);
 
 			$sales->transaction()->delete();
 			$sales->delete();

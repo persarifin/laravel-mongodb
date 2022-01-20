@@ -13,22 +13,18 @@ class TransactionController extends Controller
 
     public function __construct()
     {
-        $this->repository = new App\Repositories\TransactionRepository;
-        $this->service =  new App\Http\Services\TransactionService;
+        $this->repository = new \App\Repositories\TransactionRepository;
+        $this->service =  new \App\Http\Services\TransactionService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $result = $this->repository->index(Request::all());
-
-        return new TransactionCollection($result);
+        return $this->repository->index($request);
     }
 
     public function store(TransactionRequest $request)
     {
-        $result = $this->service->store($request);
-
-        return new TransactionResource($result);
+        return $this->service->store($request);
     }
 
     public function destroy($id)

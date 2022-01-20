@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SalesResource extends JsonResource
+class SalesResource extends BaseResource
 {
     /**
      * Transform the resource into an array.
@@ -12,23 +12,30 @@ class SalesResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
+
+    protected $availableRelations = ['transaction','transportation'];
+    protected $resourceType = 'sales';
+
     public function toArray($request)
     {
-        return [
-            'id' => $this->id,
+        return $this->transformResponse([
+            'id' => $this->getIdentifier(),
             'invoice' => $this->invoice,
             'quantity' => $this->quantity,
             'customer_name' => $this->customer_name,
             'selling_date' => $this->selling_date,
             'transportation' => $this->transportation ? $this->transportation : null,
             'user' => $this->user ? $this->user : null
-        ];
+        ]);
     }
-    public function with($request)
+
+    public function getTransactionRelation()
     {
-        return [
-            'status'    => 200,
-            'error'     => 0,
-        ];
+      return new TransactionResource($this->transaction);
+    }
+
+    public function getTransportationRelation()
+    {
+      return new TransportationResource($this->transportation);
     }
 }

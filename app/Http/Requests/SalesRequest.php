@@ -25,10 +25,10 @@ class SalesRequest extends FormRequest
     public function rules()
     {
         return [
-            'quantity' => ['required','numeric','gt:0', new CheckStockRule($this->input('transportation_id'))],
             'tax' => 'numeric',
             'customer_name'  => 'required|string',
             'transportation_id' => ['required', 'gt:0', 'integer', new \App\Rules\FindDataRule('transportations')],
+            'quantity' => ['required','numeric','gt:0', new CheckStockRule($this->input('transportation_id'))],
             'payment_expired_id' => ['required','gt:0','integer', new \App\Rules\FindDataRule('payment_expireds')],
         ];
     }

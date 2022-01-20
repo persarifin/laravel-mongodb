@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PaymentExpiredResource extends JsonResource
+class PaymentExpiredResource extends BaseResource
 {
     /**
      * Transform the resource into an array.
@@ -12,19 +12,16 @@ class PaymentExpiredResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
+    protected $availableRelations = [];
+    protected $resourceType = 'paymend_expired';
+    
     public function toArray($request)
     {
-        return [
-            'id' => $this->id,
-            'hours' => $this->hours
-        ];
-    }
-
-    public function with($request)
-    {
-        return [
-            'status'    => 200,
-            'error'     => 0,
-        ];
+        return $this->transformResponse([
+            'id'              => $this->getIdentifier(),
+            'hours'       => $this->hours,
+            'created_at'      => $this->created_at,
+            'updated_at'      => $this->updated_at
+        ]);
     }
 }

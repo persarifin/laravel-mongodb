@@ -18,18 +18,16 @@ class TransportationService extends BaseService
 	{
 		try{
 			$payload = $request->all();
-			
-			$transportation = $this->transportationRepository->getModel()->create($payload);
+			$payload['type'] = $payload['cars'] ? 'CAR' : 'MOTORCYCLE';
+			$transportation = \App\Models\Transportation::create($payload);
 
-			if ($payload['car']) {
-				$transportation->car()->create($payload);
-			}elseif ($payload['motorcycle']) {
-				$transportation->motorcycle()->create($payload);
+			if ($payload['cars']) {
+				$transportation->car()->create($request['cars']);
+			}elseif ($payload['motorcycles']) {
+				$transportation->motorcycle()->create($payload['motorcycles']);
 			}
 
-			$payload['relations'] = ['car','motorcycle'];
-
-			return $this->transportationRepository->show($transportation->id, $payload);
+			return $this->transportationRepository->show($transportation->_id, $payload);
 		}catch (\Exception $e) {
 			response()->json([
 			   'success' => false,
@@ -42,7 +40,7 @@ class TransportationService extends BaseService
 	{
 		try{
 			$payload = $request->all();
-			$transportation = $this->getModel()->find($id);
+			$transportation = \App\Models\Transportation::find($id);
 
             if (!$transportation) throw new \Exception("data not found", 400);
 
@@ -56,10 +54,8 @@ class TransportationService extends BaseService
 
 			$payload['relations'] = ['car','motorcycle'];
 
-			return $this->transportationRepository->show($transportation->id, $payload);
+			return $this->transportationRepository->show($transportation->_id, $payload);
 		
-
-			return $this->show($transportation->id, $request);
 		}catch (\Exception $e) {
 			response()->json([
 			   'success' => false,

@@ -11,7 +11,7 @@ class Motorcycle extends Model
 
     protected $fillable = [
         'machine',
-        'suspension_id',
+        'suspension_type',
         'transmission_type'
     ];
 
