@@ -17,7 +17,7 @@ class TransactionRepository extends BaseRepository
 	public function index($request)
 	{
 		try {
-			$this->query = $this->getModel();
+			$this->query = $this->getModel()->with(['payment_method']);
 			$this->applyCriteria(new SearchCriteria($request));
 			$presenter = new DataPresenter(TransactionResource::class, $request);
 	
@@ -34,7 +34,7 @@ class TransactionRepository extends BaseRepository
 
 	public function show($id, $request)
 	{
-		$this->query = $this->getModel()->where('_id', $id);
+		$this->query = $this->getModel()->where('_id', $id)->with(['payment_method']);
 		$presenter = new DataPresenter(TransactionResource::class, $request);
 	
 		return $presenter->render($this->query);

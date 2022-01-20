@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\TransactionRequest;
 use App\Http\Resources\TransactionResource;
+use App\Http\Services\TransactionService;
 use App\Http\Resources\TransactionCollection;
+use App\Repositories\TransactionRepository;
 
 class TransactionController extends Controller
 {
@@ -13,8 +15,8 @@ class TransactionController extends Controller
 
     public function __construct()
     {
-        $this->repository = new \App\Repositories\TransactionRepository;
-        $this->service =  new \App\Http\Services\TransactionService;
+        $this->repository = new TransactionRepository;
+        $this->service =  new TransactionService;
     }
 
     public function index(Request $request)

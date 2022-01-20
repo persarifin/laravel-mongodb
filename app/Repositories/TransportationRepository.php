@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Transportation;
 use App\Http\Criterias\SearchCriteria;
+use Illuminate\Http\Request;
 use App\Http\Presenters\DataPresenter;
 use App\Http\Resources\TransportationResource;
 
@@ -34,13 +35,11 @@ class TransportationRepository extends BaseRepository
 
 	public function show($id, $request)
 	{
-		$this->query = $this->getModel()->where('_id', $id)->with(['car','motorcycle']);
-
-		// return $this->query;
-		
+		$this->query = Transportation::where('_id', $id);
 		$presenter = new DataPresenter(TransportationResource::class, $request);
 	
 		return $presenter->render($this->query);
+	
 	}
 	
 

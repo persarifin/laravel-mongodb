@@ -27,9 +27,9 @@ class SalesRequest extends FormRequest
         return [
             'tax' => 'numeric',
             'customer_name'  => 'required|string',
-            'transportation_id' => ['required', 'gt:0', 'integer', new \App\Rules\FindDataRule('transportations')],
+            'transportation_id' => ['required', 'string', new \App\Rules\FindDataRule('transportations')],
             'quantity' => ['required','numeric','gt:0', new CheckStockRule($this->input('transportation_id'))],
-            'payment_expired_id' => ['required','gt:0','integer', new \App\Rules\FindDataRule('payment_expireds')],
+            'payment_expired_id' => ['required','string', new \App\Rules\FindDataRule('payment_expireds')],
         ];
     }
 }

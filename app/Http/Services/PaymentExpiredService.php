@@ -17,38 +17,24 @@ class PaymentExpiredService extends BaseService
 
     public function store($request)
 	{
-		try{
-			$payload = $request->all();
-			$payment = PaymentExpired::create($payload);
+		$payload = $request->all();
+		$payment = PaymentExpired::create($payload);
 
-			return $this->paymentExpiredRepository->show($payment->_id, $request);
-		}catch (\Exception $e) {
-			response()->json([
-			   'success' => false,
-			   'message' => $e->getMessage()
-		   ], 400);
-	   }
+		return $this->paymentExpiredRepository->show($payment->_id, $request);
 	}
 
 	public function update($id, $request)
 	{
-		try{
-			$payload = $request->all();
-			$payment = PaymentExpired::find($id);
+		$payload = $request->all();
+		$payment = PaymentExpired::find($id);
 
-			if (!$payment) {
-				throw new \Exception("data not found", 400);
-			}
-			
-			$payment->update($payload);
+		if (!$payment) {
+			throw new \Exception("data not found", 400);
+		}
+		
+		$payment->update($payload);
 
-			return $this->paymentExpiredRepository->show($payment->_id, $request);
-		}catch (\Exception $e) {
-			response()->json([
-			   'success' => false,
-			   'message' => $e->getMessage()
-		   ], 400);
-	   }
+		return $this->paymentExpiredRepository->show($payment->_id, $request);
 		
 	}
 }

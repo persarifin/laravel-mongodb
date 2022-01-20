@@ -5,11 +5,11 @@ namespace App\Http\Services;
 use Illuminate\Http\Request;
 use App\Repositories\SalesRepository;
 use App\Repositories\TransportationRepository;
-use Carbon\Carbon;
 
 class SalesService extends BaseService
 {
-	protected $salesRepository, $transportationRepository;
+	protected $salesRepository;
+	protected $transportationRepository;
     public function __construct()
     {
         $this->salesRepository = new SalesRepository;
@@ -18,50 +18,36 @@ class SalesService extends BaseService
 
     public function store($request)
 	{
-		try{
-			$payload = $request->all();
-			$latestSales = \App\Models\Sales::orderByDesc('id')->first();
-			$payload['invoice'] = 'INV'.date('ymdhis'). $latestSales? $latestSales->_id : '01';
-			$payload['selling_date'] = Carbon::now()->toDatetimeString;
+		$payload = $request->all();
+		$latestSales = \App\Models\Sales::orderBy('_id','DESC')->first();
+		$payload['invoice'] = 'INV'.date('ymdhis'). ($latestSales? $latestSales->_id : '01');
+		$payload['selling_date'] = date('Y-m-d H:i:s');
 
-			$transportation = \App\Models\Transportation::find($payload['transportation_id']);
-            $payload['amount'] = ($payload['amount'] * $payload['quantity']);
+		$transportation = \App\Models\Transportation::find($payload['transportation_id']);
+		$payload['amount'] = ($transportation->price * $payload['quantity']);
+		
+		if (!empty($payload['tax']) && $payload['tax'] > 0) {
+			$payload['amount'] = $payload['amount'] + (($payload['amount'] * $payload['tax'])/100);
+		}
+		
+		$paymentExpired = \App\Models\PaymentExpired::find($payload['payment_expired_id']);
+		$payload['payment_expired_at'] = date('Y-m-d H:i:s', strtotime('+5 hours'));
+		$payload['user_id'] = \Auth::user()->_id;
+		$payload['status'] = "UNPAID"; 
+		$sales = \App\Models\Sales::create($payload);
 
-			if ($payload['tax'] > 0) {
-				$payload['amount'] = $payload['amount'] + (($payload['amount'] * $payload['tax'])/100);
-			}
-
-			$paymentExpired = \App\Models\PaymentExpired::find($payload['payment_expired_id']);
-			$payload['payment_expired_at'] = Carbon::now()->addHours($paymentExpired->hours);
-			$payload['user_id'] = \Auth::user()->_id;
-			$payload['status'] = "UNPAID"; 
-			$sales = create($payload);
-
-			return $this->salesRepository->show($sales->_id, $request);
-		}catch (\Exception $e) {
-			response()->json([
-			   'success' => false,
-			   'message' => $e->getMessage()
-		   ], 400);
-	   	}
+		return $this->salesRepository->show($sales->_id, $request);
 	}
 
 	public function updateStatusCancel($id, $request)
 	{
-		try {
-			$sales = \App\Models\Sales::find($id);
+		$sales = \App\Models\Sales::find($id);
 
-			if (!$sales) throw new \Exception("data not found", 404);
-			
-			$sales->status = 'CANCELED';
-			$sales->save();
+		if (!$sales) throw new \Exception("data not found", 404);
+		
+		$sales->status = 'CANCELED';
+		$sales->save();
 
-			return $this->salesRepository->show($sales->_id, $request);
-		}catch (\Exception $e) {
-			response()->json([
-			   'success' => false,
-			   'message' => $e->getMessage()
-		   ], 400);
-	   }
+		return $this->salesRepository->show($sales->_id, $request);
 	}
 }

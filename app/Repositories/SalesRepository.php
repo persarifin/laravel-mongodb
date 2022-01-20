@@ -34,9 +34,9 @@ class SalesRepository extends BaseRepository
 
 	public function show($id, $request)
 	{
-		$this->query = $this->getModel()->where('id', $id);
-		
+		$this->query = $this->getModel()->where('_id', $id);
 		$presenter = new DataPresenter(SalesResource::class, $request);
+		
 		return $presenter->render($this->query); 
 	}
 	

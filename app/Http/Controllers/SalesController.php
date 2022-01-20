@@ -6,15 +6,18 @@ use Illuminate\Http\Request;
 use App\Http\Requests\SalesRequest;
 use App\Http\Resources\SalesResource;
 use App\Http\Resources\SalesCollection;
+use App\Repositories\SalesRepository;
+use App\Http\Services\SalesService;
 
 class SalesController extends Controller
 {
-    protected $repository, $service;
+    protected $repository;
+    protected $service;
 
     public function __construct()
     {
-        $this->repository = new \App\Repositories\SalesRepository;
-        $this->service =  new \App\Http\Services\SalesService;
+        $this->repository = new SalesRepository;
+        $this->service =  new SalesService;
     }
 
     public function index(Request $request)

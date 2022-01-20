@@ -36,8 +36,8 @@ class Transportation extends Model
     //     return !empty($return) && $return > 0 ? $return : 0;
     // }
 
-    public function salesReport()
-    {
-        return $this->hasMany(Sales::class);
-    }
+    // public function salesReport()
+    // {
+    //     return $this->hasMany(Sales::class);
+    // }
 }

@@ -16,7 +16,7 @@ class Transaction extends Model
         'transaction_date',
     ];
 
-    public function paymentMethod()
+    public function payment_method()
     {
         return $this->belongsTo(PaymentMethod::class);
     }

@@ -26,8 +26,8 @@ class TransactionRequest extends FormRequest
     {
         return [
             'amount' => 'required|numeric',
-            'sales_id' => ['required', 'integer', new FindDataRule('sales')],
-            'payment_method_id' => ['required','integer', new FindDataRule('payment_methods')],
+            'sales_id' => ['required', 'string', new FindDataRule('sales')],
+            'payment_method_id' => ['required','string', new FindDataRule('payment_methods')],
         ];
     }
 }

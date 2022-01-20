@@ -30,7 +30,7 @@ class FindDataRule implements Rule
         if ($value <= 0 || $value == null) {
             return true;
         }
-        $data = \DB::table($this->table)->where('id', $value)->first();
+        $data = \DB::table($this->table)->where('_id', $value)->first();
         
         return isset($data);
     }

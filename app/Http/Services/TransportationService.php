@@ -16,51 +16,39 @@ class TransportationService extends BaseService
 
     public function store($request)
 	{
-		try{
-			$payload = $request->all();
-			$payload['type'] = $payload['cars'] ? 'CAR' : 'MOTORCYCLE';
-			$transportation = \App\Models\Transportation::create($payload);
+		$payload = $request->all();
+		$payload['type'] = $payload['cars'] ? 'CAR' : 'MOTORCYCLE';
+		$transportation = \App\Models\Transportation::create($payload);
 
-			if ($payload['cars']) {
-				$transportation->car()->create($request['cars']);
-			}elseif ($payload['motorcycles']) {
-				$transportation->motorcycle()->create($payload['motorcycles']);
-			}
+		if ($payload['cars']) {
+			$transportation->car()->create($request['cars']);
+		}elseif ($payload['motorcycles']) {
+			$transportation->motorcycle()->create($payload['motorcycles']);
+		}
 
-			return $this->transportationRepository->show($transportation->_id, $payload);
-		}catch (\Exception $e) {
-			response()->json([
-			   'success' => false,
-			   'message' => $e->getMessage()
-		   ], 400);
-	   }
+		return $this->transportationRepository->show($transportation->_id, $request);
 	}
 
 	public function update($id, $request)
 	{
-		try{
-			$payload = $request->all();
-			$transportation = \App\Models\Transportation::find($id);
+		$payload = $request->all();
+		$payload['type'] = $payload['cars'] ? 'CAR' : 'MOTORCYCLE';
 
-            if (!$transportation) throw new \Exception("data not found", 400);
+		$transportation = \App\Models\Transportation::find($id);
 
-			if ($payload['car']) {
-				$payload['type'] = 'CAR';
-				$transportation->car()->create($payload);
-			}elseif ($payload['motorcycle']) {
-				$payload['type'] = 'MOTORCYCLE';
-				$transportation->motorcycle()->create($payload);
-			}
+		if (!$transportation) throw new \Exception("data not found", 400);
+		if($transportation->type != $payload['type']) throw new \Exception("cannot change type", 400);
 
-			$payload['relations'] = ['car','motorcycle'];
+		if ($payload['cars']) {
+			$payload['type'] = 'CAR';
+			$transportation->car()->create($payload['cars']);
+		}elseif ($payload['motorcycles']) {
+			$payload['type'] = 'MOTORCYCLE';
+			$transportation->motorcycle()->create($payload['motorcycles']);
+		}
 
-			return $this->transportationRepository->show($transportation->_id, $payload);
-		
-		}catch (\Exception $e) {
-			response()->json([
-			   'success' => false,
-			   'message' => $e->getMessage()
-		   ], 400);
-	   }
+
+		return $this->transportationRepository->show($transportation->_id, $request);
+	
 	}
 }

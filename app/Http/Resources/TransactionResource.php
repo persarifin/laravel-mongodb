@@ -28,11 +28,11 @@ class TransactionResource extends BaseResource
 
     public function getSalesRelation()
     {
-      return new CompanyResource($this->sales);
+      return new SalesResource($this->sales);
     }
 
     public function getPaymentMethodRelation()
     {
-      return new CompanyResource($this->payment_method);
+      return new PaymentMethodResource($this->payment_method);
     }
 }

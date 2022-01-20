@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\TransportationRequest;
 use App\Http\Resources\TransportationResource;
 use App\Http\Resources\TransportationCollection;
+use App\Repositories\TransportationRepository;
+use App\Http\Services\TransportationService;
 
 class TransportationController extends Controller
 {
@@ -13,8 +15,8 @@ class TransportationController extends Controller
 
     public function __construct()
     {
-        $this->repository = new \App\Repositories\TransportationRepository;
-        $this->service =  new \App\Http\Services\TransportationService;
+        $this->repository = new TransportationRepository;
+        $this->service =  new TransportationService;
     }
 
     public function index(Request $request)
