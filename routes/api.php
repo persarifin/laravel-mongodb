@@ -21,8 +21,6 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::group(['middleware' => ['auth:api']], function(){
-    Route::get('payment', 'PaymentMethodController@index');
-    
     Route::resource('payment-methods', 'PaymentMethodController')->only(['index','store','update','destroy']);
     Route::resource('payment-expireds', 'PaymentExpiredController')->only(['index','store','update','destroy']);
     Route::resource('sales', 'SalesController')->only(['index','store','destroy']);

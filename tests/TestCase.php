@@ -22,7 +22,7 @@ abstract class TestCase extends BaseTestCase
 
     public function auth()
     {
-        return \App\Models\User::factory()->has(\App\Models\Dana::factory()->count(1))->create();
+        return \App\Models\User::factory()->create();
         
     }
 
@@ -51,7 +51,7 @@ abstract class TestCase extends BaseTestCase
                 ->assertStatus($header['status']);
     }
 
-    public function runUpdate($header = [])
+    public function runUpdate(array $header)
     {
         if ($header['authorize'] == true) {
             $response = $this->actingAs($this->auth())->put(route($header['route'], $header['id']), $header['data']);
