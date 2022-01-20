@@ -64,3 +64,10 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## INSTALLATION
+<p h4>Required</p>
+
+- PHP 8.0
+- Mongo 4.2
+- Only clone and setting your [env] .. enjoy it :)  
