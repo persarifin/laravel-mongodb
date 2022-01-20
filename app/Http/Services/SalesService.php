@@ -31,7 +31,7 @@ class SalesService extends BaseService
 		}
 		
 		$paymentExpired = \App\Models\PaymentExpired::find($payload['payment_expired_id']);
-		$payload['payment_expired_at'] = date('Y-m-d H:i:s', strtotime('+5 hours'));
+		$payload['payment_expired_at'] = date('Y-m-d H:i:s', strtotime('+'.$paymentExpired->hours.' hours'));
 		$payload['user_id'] = \Auth::user()->_id;
 		$payload['status'] = "UNPAID"; 
 		$sales = \App\Models\Sales::create($payload);

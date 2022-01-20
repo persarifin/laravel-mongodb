@@ -23,6 +23,12 @@ class SalesResource extends BaseResource
             'invoice' => $this->invoice,
             'quantity' => $this->quantity,
             'customer_name' => $this->customer_name,
+            'tax' => $this->tax == null? '0.00' : $this->tax ,
+            'amount' => $this->amount,
+            'status' => $this->status,
+            'payment_expired_at' => $this->payment_expired_at,
+            'customer_name' => $this->customer_name,
+            'customer_name' => $this->customer_name,
             'selling_date' => $this->selling_date,
             'transportation' => $this->transportation ? $this->transportation : null,
             'user' => $this->user ? $this->user : null

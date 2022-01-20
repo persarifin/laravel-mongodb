@@ -30,9 +30,9 @@ class SalesController extends Controller
         return $this->service->store($request);
     }
 
-    public function updateStatusCancel($id)
+    public function updateStatusCancel($id, Request $request)
     {
-        return $this->service->updateStatusCancel($id);
+        return $this->service->updateStatusCancel($id,$request);
     }
 
     public function destroy($id)
