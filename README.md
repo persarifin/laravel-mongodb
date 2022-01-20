@@ -70,4 +70,4 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 - PHP 8.0
 - Mongo 4.2
-- Only clone and setting your [env] .. enjoy it :)  
+- Only clone and setting your [env] https://github.com/persarifin/sales-transportation/blob/master/.env .. enjoy it :)  
