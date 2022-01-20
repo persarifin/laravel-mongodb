@@ -33,14 +33,21 @@ class TransportationService extends BaseService
 	{
 		$payload = $request->all();
 		$payload['type'] = $request->filled('cars') ? 'CAR' : 'MOTORCYCLE';
-		$transportation = \App\Models\Transportation::create($payload);
 
+		$transportation = \App\Models\Transportation::find($id);
+
+		if (!$transportation) throw new \Exception("data not found", 400);
+		if($transportation->type != $payload['type']) throw new \Exception("cannot change type", 400);
+
+		$transportation->car()->delete();
+		$transportation->motorcycle()->delete();
 		if ($request->filled('cars')) {
 			$transportation->car()->create($payload['cars']);
 		}elseif ($request->filled('motorcycles')) {
 			$transportation->motorcycle()->create($payload['motorcycles']);
 		}
-
+		
+		$transportation->update($payload);
 
 		return $this->transportationRepository->show($transportation->_id, $request);
 	
